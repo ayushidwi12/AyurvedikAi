@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌿 About AyurVedik AI - Architecture & Tech Stack</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'fadeInUp': 'fadeInUp 0.8s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-gentle': 'bounceGentle 2s ease-in-out infinite',
+                        'slide-right': 'slideRight 1s ease-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            'from': { box-shadow: '0 0 20px #10b981' },
+                            'to': { box-shadow: '0 0 30px #10b981, 0 0 40px #10b981' },
+                        },
+                        fadeInUp: {
+                            'from': { opacity: '0', transform: 'translateY(30px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        bounceGentle: {
+                            '0%, 20%, 50%, 80%, 100%': { transform: 'translateY(0)' },
+                            '40%': { transform: 'translateY(-10px)' },
+                            '60%': { transform: 'translateY(-5px)' },
+                        },
+                        slideRight: {
+                            'from': { transform: 'translateX(-100%)', opacity: '0' },
+                            'to': { transform: 'translateX(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-effect {
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #10b981, #059669, #047857);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 25%, #a7f3d0 50%, #6ee7b7 75%, #34d399 100%);
+        }
+        .flow-arrow {
+            position: relative;
+        }
+        .flow-arrow::after {
+            content: '➤';
+            font-size: 2rem;
+            color: #10b981;
+            position: absolute;
+            right: -3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: float 3s ease-in-out infinite;
+        }
+        .tech-card:hover {
+            transform: translateY(-10px) scale(1.05);
+        }
+    </style>
+</head>
+<body class="font-poppins overflow-x-hidden">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300 glass-effect shadow-xl" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 group">
+                    <div class="relative">
+                        <i class="fas fa-leaf text-green-600 text-3xl transform group-hover:scale-110 transition-transform duration-300"></i>
+                        <div class="absolute inset-0 bg-green-400 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity"></div>
+                    </div>
+                    <h1 class="text-3xl font-bold gradient-text">AyurVedik AI</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-6">
+                        <a href="{{ url_for('index') }}" class="nav-link group flex items-center text-gray-700 hover:text-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-50 hover:shadow-md">
+                            <i class="fas fa-home mr-2 group-hover:scale-110 transition-transform"></i>
+                            Home
+                        </a>
+                        <a href="#about" class="nav-link group flex items-center text-green-600 font-semibold px-4 py-2 rounded-lg transition-all duration-300 bg-green-50 shadow-md">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            About
+                        </a>
+                        <a href="{{ url_for('index') }}#features" class="nav-link group flex items-center text-gray-700 hover:text-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-50 hover:shadow-md">
+                            <i class="fas fa-star mr-2 group-hover:scale-110 transition-transform"></i>
+                            Features
+                        </a>
+                        <a href="{{ url_for('login') }}" class="group flex items-center text-gray-700 hover:text-blue-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-blue-50 hover:shadow-md">
+                            <i class="fas fa-sign-in-alt mr-2 group-hover:scale-110 transition-transform"></i>
+                            Login
+                        </a>
+                        <a href="{{ url_for('register') }}" class="group bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            <i class="fas fa-rocket mr-2 group-hover:rotate-12 transition-transform"></i>
+                            Get Started ✨
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="about" class="relative min-h-screen hero-bg flex items-center justify-center overflow-hidden pt-20">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-green-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float"></div>
+            <div class="absolute top-40 right-10 w-96 h-96 bg-emerald-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float" style="animation-delay: 2s;"></div>
+            <div class="absolute bottom-20 left-1/2 w-80 h-80 bg-teal-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float" style="animation-delay: 4s;"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div data-aos="fade-up" data-aos-duration="1000">
+                <h1 class="text-5xl md:text-7xl font-bold text-gray-900 leading-tight mb-6">
+                    <span class="block">About</span>
+                    <span class="gradient-text block">AyurVedik AI</span>
+                </h1>
+                <p class="text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl mx-auto">
+                    Bridging ancient Ayurvedic wisdom with cutting-edge Machine Learning to revolutionize Medicinal Leaf  identification and knowledge sharing.
+                </p>
+                <div class="flex items-center justify-center space-x-8 mb-8">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-600">5000+</div>
+                        <div class="text-sm text-gray-600">Years of Wisdom</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600">99%</div>
+                        <div class="text-sm text-gray-600">Accuracy</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-purple-600">1000+</div>
+                        <div class="text-sm text-gray-600">Plant Species</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Overview -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    System <span class="gradient-text">Architecture</span> 🏗️
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    A robust, scalable architecture combining modern web technologies with ML capabilities
+                </p>
+            </div>
+
+            <!-- Architecture Diagram -->
+            <div class="bg-gradient-to-br from-gray-50 to-blue-50 rounded-3xl p-8 mb-12" data-aos="fade-up">
+                <div class="grid md:grid-cols-4 gap-6 items-center">
+                    <!-- Frontend -->
+                    <div class="text-center flow-arrow">
+                        <div class="w-20 h-20 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+                            <i class="fas fa-desktop text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">Frontend</h3>
+                        <p class="text-sm text-gray-600">HTML5, CSS3, TailwindCSS, JavaScript</p>
+                    </div>
+
+                    <!-- Backend -->
+                    <div class="text-center flow-arrow">
+                        <div class="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+                            <i class="fas fa-server text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">Backend</h3>
+                        <p class="text-sm text-gray-600">Flask, Python, SQLite</p>
+                    </div>
+
+                    <!-- AI/ML -->
+                    <div class="text-center flow-arrow">
+                        <div class="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+                            <i class="fas fa-brain text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">ML</h3>
+                        <p class="text-sm text-gray-600">HuggingFace, Transformers, Gemini AI</p>
+                    </div>
+
+                    <!-- Database -->
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+                            <i class="fas fa-database text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">Database</h3>
+                        <p class="text-sm text-gray-600">SQLite, User Management</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Architecture Components -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div data-aos="fade-up" data-aos-delay="100" class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-500">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-paint-brush text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Frontend Layer</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>• Responsive UI with TailwindCSS</li>
+                        <li>• Interactive animations with AOS</li>
+                        <li>• Real-time chat interface</li>
+                        <li>• Progressive image upload</li>
+                    </ul>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="200" class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-500">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-cogs text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Application Layer</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>• Flask web framework</li>
+                        <li>• RESTful API endpoints</li>
+                        <li>• Session management</li>
+                        <li>• File upload handling</li>
+                    </ul>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="300" class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-500">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-robot text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">ML Layer</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>• Transformers</li>
+                        <li>• Image classification model</li>
+                        <li>• GenAI integration</li>
+                        <li>• Natural language processing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Process -->
+    <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    How It <span class="gradient-text">Works</span> ⚙️
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    From image upload to comprehensive plant information - here's our complete workflow
+                </p>
+            </div>
+
+            <!-- Workflow Steps -->
+            <div class="space-y-12">
+                <!-- Step 1 -->
+                <div class="flex flex-col lg:flex-row items-center gap-8" data-aos="fade-right">
+                    <div class="lg:w-1/2">
+                        <div class="bg-white p-8 rounded-2xl shadow-xl">
+                            <div class="flex items-center mb-6">
+                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                                    <span class="text-white font-bold text-xl">1</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800">Image Upload & Processing</h3>
+                            </div>
+                            <p class="text-gray-600 mb-4">User uploads plant image through our intuitive drag-and-drop interface</p>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>• <i class="fas fa-check text-green-500 mr-2"></i>File validation and security checks</li>
+                                <li>• <i class="fas fa-check text-green-500 mr-2"></i>Image preprocessing and optimization</li>
+                                <li>• <i class="fas fa-check text-green-500 mr-2"></i>Base64 encoding for frontend display</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2">
+                        <div class="bg-gradient-to-br from-blue-100 to-indigo-100 p-8 rounded-2xl">
+                            <i class="fas fa-cloud-upload-alt text-6xl text-blue-600 mb-4 animate-bounce-gentle"></i>
+                            <div class="text-sm text-gray-600">
+                                <div class="mb-2">📸 Supported formats: JPG, PNG, JPEG, GIF, BMP, WEBP</div>
+                                <div>💾 Maximum size: 16MB</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex flex-col lg:flex-row-reverse items-center gap-8" data-aos="fade-left">
+                    <div class="lg:w-1/2">
+                        <div class="bg-white p-8 rounded-2xl shadow-xl">
+                            <div class="flex items-center mb-6">
+                                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-4">
+                                    <span class="text-white font-bold text-xl">2</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800">AI Model Classification</h3>
+                            </div>
+                            <p class="text-gray-600 mb-4">Advanced ML model analyzes plant features for accurate identification</p>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>• <i class="fas fa-check text-green-500 mr-2"></i>Machine Learning</li>
+                                <li>• <i class="fas fa-check text-green-500 mr-2"></i>Feature extraction and pattern recognition</li>
+                                <li>• <i class="fas fa-check text-green-500 mr-2"></i>Confidence score calculation</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2">
+                        <div class="bg-gradient-to-br from-green-100 to-emerald-100 p-8 rounded-2xl">
+                            <i class="fas fa-brain text-6xl text-green-600 mb-4 animate-pulse"></i>
+                            <div class="text-sm text-gray-600">
+                                <div class="mb-2">🎯 Model: dima806/medicinal_plants_image_detection</div>
+                                <div>📊 Accuracy: 99%+ on trained dataset</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex flex-col lg:flex-row items-center gap-8" data-aos="fade-right">
+                    <div class="lg:w-1/2">
+                        <div class="bg-white p-8 rounded-2xl shadow-xl">
+                            <div class="flex items-center mb-6">
+                                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mr-4">
+                                    <span class="text-white font-bold text-xl">3</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800">Knowledge Generation</h3>
+                            </div>
+                            <p class="text-gray-600 mb-4">GenAI generates comprehensive medicinal information</p>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>• <i class="fas fa-check text-green-500 mr-2"></i>Scientific name and classification</li>
+                                <li>• <i class="fas fa-check text-green-500 mr-2"></i>Medicinal properties and benefits</li>
+                                <li>• <i class="fas fa-check text-green-500 mr-2"></i>Usage instructions and precautions</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2">
+                        <div class="bg-gradient-to-br from-purple-100 to-pink-100 p-8 rounded-2xl">
+                            <i class="fas fa-book-medical text-6xl text-purple-600 mb-4 animate-float"></i>
+                            <div class="text-sm text-gray-600">
+                                <div class="mb-2">🤖 Powered by Google Gemini 2.0 Flash</div>
+                                <div>📚 Rich Ayurvedic knowledge base</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    Technology <span class="gradient-text">Stack</span> 💻
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Built with modern, reliable technologies for optimal performance and scalability
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Frontend Technologies -->
+                <div data-aos="fade-up" data-aos-delay="100" class="tech-card bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100 transition-all duration-500 hover:shadow-2xl">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-4 mx-auto">
+                            <i class="fab fa-html5 text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-3">Frontend</h3>
+                        <div class="space-y-2 text-sm text-gray-600">
+                            <div class="flex items-center justify-center">
+                                <i class="fab fa-html5 text-orange-500 mr-2"></i>HTML5
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fab fa-css3-alt text-blue-500 mr-2"></i>CSS3
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fab fa-js text-yellow-500 mr-2"></i>JavaScript
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-wind text-cyan-500 mr-2"></i>TailwindCSS
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backend Technologies -->
+                <div data-aos="fade-up" data-aos-delay="200" class="tech-card bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-2xl border border-green-100 transition-all duration-500 hover:shadow-2xl">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4 mx-auto">
+                            <i class="fab fa-python text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-3">Backend</h3>
+                        <div class="space-y-2 text-sm text-gray-600">
+                            <div class="flex items-center justify-center">
+                                <i class="fab fa-python text-blue-500 mr-2"></i>Python
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-flask text-gray-700 mr-2"></i>Flask
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-database text-blue-600 mr-2"></i>SQLite
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-shield-alt text-red-500 mr-2"></i>Werkzeug
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI/ML Technologies -->
+                <div data-aos="fade-up" data-aos-delay="300" class="tech-card bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-100 transition-all duration-500 hover:shadow-2xl">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-4 mx-auto">
+                            <i class="fas fa-brain text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-3">ML</h3>
+                        <div class="space-y-2 text-sm text-gray-600">
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-robot text-purple-500 mr-2"></i>ML Model
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-cogs text-orange-500 mr-2"></i>Transformers
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fab fa-google text-blue-500 mr-2"></i>Gemini AI
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-image text-green-500 mr-2"></i>PIL
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools & Libraries -->
+                <div data-aos="fade-up" data-aos-delay="400" class="tech-card bg-gradient-to-br from-yellow-50 to-orange-50 p-6 rounded-2xl border border-yellow-100 transition-all duration-500 hover:shadow-2xl">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-2xl flex items-center justify-center mb-4 mx-auto">
+                            <i class="fas fa-tools text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-3">Tools</h3>
+                        <div class="space-y-2 text-sm text-gray-600">
+                            <div class="flex items-center justify-center">
+                                <i class="fab fa-github text-gray-800 mr-2"></i>GitHub
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-file-code text-blue-500 mr-2"></i>VS Code
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-markdown text-gray-600 mr-2"></i>Markdown
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-font text-purple-500 mr-2"></i>FontAwesome
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Deep Dive -->
+    <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    Core <span class="gradient-text">Features</span> 🚀
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Comprehensive features designed for researchers, practitioners, and plant enthusiasts
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div data-aos="fade-right" class="bg-white p-8 rounded-3xl shadow-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-camera text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Medicinal Leaf Detection</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>AI-powered image recognition with 99% accuracy</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Real-time processing and instant results</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Confidence scoring for reliability assessment</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Support for multiple image formats</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div data-aos="fade-left" class="bg-white p-8 rounded-3xl shadow-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-robot text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Knowledge Assistant</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-blue-500 mr-3 mt-1"></i>
+                            <span>Interactive chat with ML expert</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-blue-500 mr-3 mt-1"></i>
+                            <span>Comprehensive Ayurvedic information</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-blue-500 mr-3 mt-1"></i>
+                            <span>Safety guidelines and precautions</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-blue-500 mr-3 mt-1"></i>
+                            <span>Preparation methods and usage instructions</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div data-aos="fade-right" class="bg-white p-8 rounded-3xl shadow-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-users text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">User Experience</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-purple-500 mr-3 mt-1"></i>
+                            <span>Intuitive drag-and-drop interface</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-purple-500 mr-3 mt-1"></i>
+                            <span>Responsive design for all devices</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-purple-500 mr-3 mt-1"></i>
+                            <span>Secure user authentication</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-purple-500 mr-3 mt-1"></i>
+                            <span>History tracking and favorites</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div data-aos="fade-left" class="bg-white p-8 rounded-3xl shadow-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-shield-alt text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Security & Privacy</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-yellow-500 mr-3 mt-1"></i>
+                            <span>Encrypted password storage</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-yellow-500 mr-3 mt-1"></i>
+                            <span>Secure file upload validation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-yellow-500 mr-3 mt-1"></i>
+                            <span>Session management and timeout</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-yellow-500 mr-3 mt-1"></i>
+                            <span>Privacy-first approach</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-gradient-to-br from-green-500 via-emerald-600 to-teal-700 relative overflow-hidden">
+        <!-- Animated Background -->
+        <div class="absolute inset-0">
+            <div class="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full animate-pulse-slow"></div>
+            <div class="absolute bottom-10 right-10 w-48 h-48 bg-white/5 rounded-full animate-float"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8" data-aos="fade-up">
+            <h2 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                Ready to Explore? 🌟
+            </h2>
+            <p class="text-xl md:text-2xl text-green-100 mb-8 leading-relaxed">
+                Join the revolution in medicinal plant discovery with cutting-edge AI technology
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                <a href="{{ url_for('register') }}" class="group bg-white text-green-600 font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-white/25">
+                    <span class="flex items-center justify-center">
+                        Get Started Now 🚀
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                </a>
+                <a href="{{ url_for('login') }}" class="group border-2 border-white text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:bg-white hover:text-green-600">
+                    <span class="flex items-center justify-center">
+                        Sign In to Continue
+                        <i class="fas fa-sign-in-alt ml-2 group-hover:scale-110 transition-transform"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center items-center">
+                <div class="flex items-center space-x-4 group">
+                    <div class="relative">
+                        <i class="fas fa-leaf text-green-400 text-3xl group-hover:scale-110 transition-transform duration-300"></i>
+                        <div class="absolute inset-0 bg-green-400 rounded-full blur-lg opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-gray-400 text-lg">
+                            © 2025 <span class="gradient-text font-semibold">AyurVedik AI</span>
+                        </p>
+                        <p class="text-gray-500">Bridging ancient wisdom with modern technology 🌿</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

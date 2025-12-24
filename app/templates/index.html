@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌿 AyurVedik AI - Medicinal Leaf Detection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'fadeInUp': 'fadeInUp 0.8s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            'from': { box-shadow: '0 0 20px #10b981' },
+                            'to': { box-shadow: '0 0 30px #10b981, 0 0 40px #10b981' },
+                        },
+                        fadeInUp: {
+                            'from': { opacity: '0', transform: 'translateY(30px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-effect {
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #10b981, #059669, #047857);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 25%, #a7f3d0 50%, #6ee7b7 75%, #34d399 100%);
+        }
+    </style>
+</head>
+<body class="font-poppins overflow-x-hidden">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 group">
+                    <div class="relative">
+                        <i class="fas fa-leaf text-green-600 text-3xl transform group-hover:scale-110 transition-transform duration-300"></i>
+                        <div class="absolute inset-0 bg-green-400 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity"></div>
+                    </div>
+                    <h1 class="text-3xl font-bold gradient-text">AyurVedik AI</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-6">
+                        <a href="#hero" class="nav-link group flex items-center text-gray-700 hover:text-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-50 hover:shadow-md">
+                            <i class="fas fa-home mr-2 group-hover:scale-110 transition-transform"></i>
+                            Home
+                        </a>
+                        <a href="{{ url_for('about') }}" class="nav-link group flex items-center text-gray-700 hover:text-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-50 hover:shadow-md">
+                            <i class="fas fa-info-circle mr-2 group-hover:scale-110 transition-transform"></i>
+                            About
+                        </a>
+                        <a href="#features" class="nav-link group flex items-center text-gray-700 hover:text-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-50 hover:shadow-md">
+                            <i class="fas fa-star mr-2 group-hover:scale-110 transition-transform"></i>
+                            Features
+                        </a>
+                        <a href="{{ url_for('login') }}" class="group flex items-center text-gray-700 hover:text-blue-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-blue-50 hover:shadow-md">
+                            <i class="fas fa-sign-in-alt mr-2 group-hover:scale-110 transition-transform"></i>
+                            Login
+                        </a>
+                        <a href="{{ url_for('register') }}" class="group bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            <i class="fas fa-rocket mr-2 group-hover:rotate-12 transition-transform"></i>
+                            Get Started ✨
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen hero-bg flex items-center justify-center overflow-hidden">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-green-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float"></div>
+            <div class="absolute top-40 right-10 w-96 h-96 bg-emerald-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float" style="animation-delay: 2s;"></div>
+            <div class="absolute bottom-20 left-1/2 w-80 h-80 bg-teal-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float" style="animation-delay: 4s;"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div data-aos="fade-right" data-aos-duration="1000">
+                    <div class="text-center lg:text-left">
+                        <h1 class="text-5xl md:text-7xl font-bold text-gray-900 leading-tight mb-6">
+                            <span class="block">Discover</span>
+                            <span class="gradient-text block">Nature's Secrets</span>
+                            <span class="text-4xl md:text-5xl block mt-2">with ML</span>
+                        </h1>
+                        <p class="text-xl text-gray-600 mb-8 leading-relaxed max-w-lg">
+                            Unlock the ancient wisdom of <span class="font-semibold text-green-600">Ayurveda</span> through cutting-edge Machine Learning. Identify medicinal plants leaf instantly and discover their healing properties.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                            <a href="{{ url_for('register') }}" class="group bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-green-500/25 animate-glow">
+                                <span class="flex items-center justify-center">
+                                    Start Your Journey 🚀
+                                    <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                                </span>
+                            </a>
+                            <a href="#how-it-works" class="group bg-white/80 backdrop-blur-sm border-2 border-green-200 hover:border-green-300 text-green-700 font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                <span class="flex items-center justify-center">
+                                    See How It Works 🔍
+                                    <i class="fas fa-play ml-2 group-hover:scale-110 transition-transform"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Content - Image -->
+                <div data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200" class="relative">
+                    <div class="relative transform hover:scale-105 transition-transform duration-500">
+                        <img class="w-full h-96 lg:h-[500px] object-cover rounded-3xl shadow-2xl" src="https://plantlane.com/cdn/shop/articles/bottles-homeopathic-globules-thu.jpg?v=1688375982" alt="Medicinal plants">
+                        <div class="absolute inset-0 bg-gradient-to-t from-green-900/20 to-transparent rounded-3xl"></div>
+                        <!-- Floating Elements -->
+                        <div class="absolute -top-4 -right-4 bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-lg animate-float">
+                            <i class="fas fa-seedling text-green-500 text-2xl"></i>
+                        </div>
+                        <div class="absolute -bottom-4 -left-4 bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-lg animate-float" style="animation-delay: 1s;">
+                            <i class="fas fa-microscope text-blue-500 text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About/Mission Section -->
+    <section id="about" class="py-20 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    Our <span class="gradient-text">Mission</span> 🎯
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Bridging ancient Ayurvedic wisdom with modern AI technology to democratize access to medicinal plant knowledge and promote natural healing worldwide.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div data-aos="fade-up" data-aos-delay="100" class="group p-8 bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-green-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-brain text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">ML-Powered Detection</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Advanced machine learning algorithms trained on thousands of medicinal plant images for accurate identification.
+                    </p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="200" class="group p-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-blue-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-book-open text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Ancient Wisdom</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Comprehensive database of traditional Ayurvedic knowledge and medicinal properties passed down through generations.
+                    </p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="300" class="group p-8 bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-purple-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-users text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Accessible to All</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Making medicinal plant knowledge accessible to everyone, from researchers to traditional healers to curious learners.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    How <span class="gradient-text">It Works</span> ⚡
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Simple, fast, and accurate medicinal plant identification in just three easy steps
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div data-aos="fade-up" data-aos-delay="100" class="text-center group">
+                    <div class="relative inline-block mb-6">
+                        <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110">
+                            <i class="fas fa-camera text-white text-3xl"></i>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-sm font-bold text-gray-800">1</div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Upload Photo</h3>
+                    <p class="text-gray-600">Simply take a photo of any plant or upload an existing image from your device</p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="200" class="text-center group">
+                    <div class="relative inline-block mb-6">
+                        <div class="w-24 h-24 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110">
+                            <i class="fas fa-brain text-white text-3xl"></i>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-sm font-bold text-gray-800">2</div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Analysis</h3>
+                    <p class="text-gray-600">Our advanced ML model analyzes the image and identifies the plant with high accuracy</p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="300" class="text-center group">
+                    <div class="relative inline-block mb-6">
+                        <div class="w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110">
+                            <i class="fas fa-book-medical text-white text-3xl"></i>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-sm font-bold text-gray-800">3</div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Get Insights</h3>
+                    <p class="text-gray-600">Receive detailed information about medicinal properties, uses, and preparation methods</p>
+                </div>
+            </div>
+
+            <!-- Demo Preview -->
+            <div data-aos="fade-up" data-aos-delay="400" class="bg-white rounded-3xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-500">
+                <div class="p-8 text-center">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">See It In Action 🎬</h3>
+                    <p class="text-gray-600 mb-6">Watch how our AI identifies plants and provides comprehensive medicinal information</p>
+                    <div class="relative w-full" style="padding-bottom: 56.25%;">
+                        <iframe 
+                            class="absolute top-0 left-0 w-full h-full rounded-2xl"
+                            src="https://www.youtube.com/embed/1Uq_7Gm6zQk" 
+                            title="Demo Video"
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    Powerful <span class="gradient-text">Features</span> ⚡
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Everything you need to explore the world of medicinal plants leaf with cutting-edge technology
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Existing features with enhanced styling -->
+                <div data-aos="fade-up" data-aos-delay="100" class="group p-8 bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-green-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-camera text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">ML Plant Detection</h3>
+                    <p class="text-gray-600">
+                        Upload any plant image and get instant identification using advanced Machine Learning technology.
+                    </p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="200" class="group p-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-blue-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-book-medical text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Ayurvedic Knowledge</h3>
+                    <p class="text-gray-600">
+                        Get detailed information about medicinal properties and traditional uses.
+                    </p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="300" class="group p-8 bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-purple-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-robot text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">ML Assistant</h3>
+                    <p class="text-gray-600">
+                        Chat with our Machine Learning expert for personalized guidance and plant knowledge.
+                    </p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="400" class="group p-8 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-yellow-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Safety Information</h3>
+                    <p class="text-gray-600">
+                        Comprehensive safety guidelines and precautions for each medicinal plant.
+                    </p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="500" class="group p-8 bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-teal-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-mobile-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Mobile Friendly</h3>
+                    <p class="text-gray-600">
+                        Access from anywhere with our responsive design optimized for all devices.
+                    </p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="600" class="group p-8 bg-gradient-to-br from-red-50 to-pink-50 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-red-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-400 to-pink-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-heart text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Health Benefits</h3>
+                    <p class="text-gray-600">
+                        Discover the therapeutic benefits and healing properties of each plant.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-gradient-to-br from-green-500 via-emerald-600 to-teal-700 relative overflow-hidden">
+        <!-- Animated Background -->
+        <div class="absolute inset-0">
+            <div class="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full animate-pulse-slow"></div>
+            <div class="absolute bottom-10 right-10 w-48 h-48 bg-white/5 rounded-full animate-float"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8" data-aos="fade-up">
+            <h2 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                Ready to Explore? 🌟
+            </h2>
+            <p class="text-xl md:text-2xl text-green-100 mb-8 leading-relaxed">
+                Join thousands of users discovering the power of medicinal plants with AI assistance
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                <a href="{{ url_for('register') }}" class="group bg-white text-green-600 font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-white/25">
+                    <span class="flex items-center justify-center">
+                        Start Free Today 🚀
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                </a>
+                <a href="{{ url_for('login') }}" class="group border-2 border-white text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:bg-white hover:text-green-600">
+                    <span class="flex items-center justify-center">
+                        Already a Member? Sign In
+                        <i class="fas fa-sign-in-alt ml-2 group-hover:scale-110 transition-transform"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center items-center">
+                <div class="flex items-center space-x-4 group">
+                    <div class="relative">
+                        <i class="fas fa-leaf text-green-400 text-3xl group-hover:scale-110 transition-transform duration-300"></i>
+                        <div class="absolute inset-0 bg-green-400 rounded-full blur-lg opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-gray-400 text-lg">
+                            © 2025 <span class="gradient-text font-semibold">AyurVedik AI</span>
+                        </p>
+                        <p class="text-gray-500">Made with 💚 for nature lovers & health enthusiasts</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('glass-effect');
+                navbar.classList.add('shadow-xl');
+            } else {
+                navbar.classList.remove('glass-effect');
+                navbar.classList.remove('shadow-xl');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animations to elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fadeInUp');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

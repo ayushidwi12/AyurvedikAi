@@ -1,0 +1,7 @@
+torch
+torchvision
+Pillow
+transformers
+flask
+google-generativeai
+werkzeug

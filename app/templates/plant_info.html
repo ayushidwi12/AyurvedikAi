@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌿 {{ plant_name }} - Plant Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-gentle': 'bounceGentle 3.5s ease-in-out infinite',
+                        'spin-slow': 'spin 4s linear infinite',
+                        'fadeIn': 'fadeIn 0.8s ease-in-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) scale(1)' },
+                            '50%': { transform: 'translateY(-10px) scale(1.05)' },
+                        },
+                        bounceGentle: {
+                            '0%, 20%, 50%, 80%, 100%': { transform: 'translateY(0)' },
+                            '40%': { transform: 'translateY(-8px)' },
+                            '60%': { transform: 'translateY(-4px)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: '0', transform: 'translateY(20px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .loading-text-cycle {
+            animation: fadeIn 1s ease-in-out infinite alternate;
+        }
+        .progress-bar {
+            width: 0%;
+            animation: progressFill 4.5s ease-in-out forwards;
+        }
+        @keyframes progressFill {
+            0% { width: 0%; }
+            25% { width: 25%; }
+            50% { width: 60%; }
+            75% { width: 85%; }
+            100% { width: 100%; }
+        }
+    </style>
+</head>
+<body class="font-poppins bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 min-h-screen">
+    <!-- Enhanced Loading Screen -->
+    <div id="loadingScreen" class="fixed inset-0 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 z-50 flex items-center justify-center">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0">
+            <div class="absolute top-20 left-20 w-32 h-32 bg-green-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float"></div>
+            <div class="absolute top-40 right-20 w-40 h-40 bg-emerald-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float" style="animation-delay: 1s;"></div>
+            <div class="absolute bottom-20 left-1/3 w-36 h-36 bg-teal-300 rounded-full mix-blend-multiply filter blur-xl opacity-25 animate-float" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="relative text-center max-w-md mx-auto px-6">
+            <!-- Main Loading Animation -->
+            <div class="relative w-40 h-40 mb-8 mx-auto">
+                <!-- Outer ring -->
+                <div class="absolute inset-0 border-4 border-green-200 rounded-full"></div>
+                <!-- Spinning ring -->
+                <div class="absolute inset-0 border-4 border-green-500 rounded-full border-t-transparent animate-spin"></div>
+                <!-- Secondary ring -->
+                <div class="absolute inset-2 border-2 border-emerald-300 rounded-full border-b-transparent animate-spin-slow"></div>
+                <!-- Center icon -->
+                <div class="absolute inset-6 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center shadow-lg">
+                    <i class="fas fa-leaf text-green-600 text-4xl animate-pulse-slow"></i>
+                </div>
+                <!-- Floating particles -->
+                <div class="absolute -top-2 left-1/2 w-3 h-3 bg-green-400 rounded-full animate-bounce-gentle" style="animation-delay: 0.5s;"></div>
+                <div class="absolute -right-2 top-1/2 w-2 h-2 bg-emerald-400 rounded-full animate-bounce-gentle" style="animation-delay: 1s;"></div>
+                <div class="absolute -bottom-2 left-1/3 w-2.5 h-2.5 bg-teal-400 rounded-full animate-bounce-gentle" style="animation-delay: 1.5s;"></div>
+            </div>
+
+            <!-- Dynamic Title -->
+            <h2 class="text-3xl font-bold text-gray-800 mb-4 animate-fadeIn">
+                <span class="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                    Loading Plant Information...
+                </span>
+            </h2>
+
+            <!-- Animated Dots -->
+            <div class="flex justify-center space-x-2 mb-6">
+                <div class="w-3 h-3 bg-green-500 rounded-full animate-bounce" style="animation-delay: 0s;"></div>
+                <div class="w-3 h-3 bg-emerald-500 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+                <div class="w-3 h-3 bg-teal-500 rounded-full animate-bounce" style="animation-delay: 0.4s;"></div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="mb-6">
+                <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                    <div class="progress-bar h-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-full"></div>
+                </div>
+            </div>
+
+            <!-- Dynamic Loading Messages -->
+            <div class="space-y-2">
+                <p class="text-gray-700 font-medium loading-text-cycle" id="loadingMessage">
+                    Gathering comprehensive medicinal information about <strong class="text-green-700">{{ plant_name }}</strong>...
+                </p>
+                <p class="text-sm text-gray-500 animate-pulse">
+                    <i class="fas fa-brain mr-1 text-blue-500"></i>
+                    Analyzing ancient Ayurvedic knowledge
+                </p>
+            </div>
+
+            <!-- Fun Facts Carousel -->
+            <div class="mt-8 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg">
+                <div class="flex items-center justify-center mb-2">
+                    <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                    <span class="text-sm font-semibold text-gray-700">Did you know?</span>
+                </div>
+                <p class="text-xs text-gray-600 text-center" id="funFact">
+                    Ayurveda has been practiced for over 5,000 years! 🌿
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white/80 backdrop-blur-lg shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-leaf text-green-600 text-2xl mr-2"></i>
+                    <h1 class="text-2xl font-bold text-gray-800">AyurVedik AI</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('predict') }}" class="text-green-600 hover:text-green-800 px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-arrow-left mr-1"></i>Back to Detection
+                    </a>
+                    <span class="text-gray-700">{{ session.username }} 👋</span>
+                    <a href="{{ url_for('logout') }}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header Section -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                    🌿 {{ plant_name }}
+                </h1>
+                <p class="text-lg text-gray-600">
+                    Comprehensive information about this medicinal plant
+                </p>
+            </div>
+
+            <!-- Main Content -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <!-- Header Banner -->
+                <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-8 py-6">
+                    <h2 class="text-2xl font-bold text-white flex items-center">
+                        <i class="fas fa-seedling mr-3"></i>
+                        Plant Information & Medicinal Properties
+                    </h2>
+                </div>
+
+                <!-- Content Area -->
+                <div class="p-8">
+                    <!-- ML Generated Content -->
+                    <div class="prose prose-lg max-w-none">
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 p-6 mb-6 rounded-r-lg">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-robot text-blue-600 text-xl mr-2"></i>
+                                <h3 class="text-lg font-semibold text-blue-800">AyurVedik ML Knowledge</h3>
+                            </div>
+                            <div id="plant-info-content" class="text-gray-700 leading-relaxed">{{ plant_info|safe }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Chat Section -->
+                    <div class="mt-8 bg-gray-50 rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-comments text-green-600 mr-2"></i>
+                            Ask AyurVedik ML 🤖
+                        </h3>
+                        <p class="text-gray-600 mb-4">
+                            Have more questions about {{ plant_name }}? Chat with our Machine Learning expert for personalized guidance.
+                        </p>
+                        
+                        <!-- Chat Interface -->
+                        <div id="chat-container" class="hidden">
+                            <div id="chat-messages" class="bg-white rounded-lg p-4 h-64 overflow-y-auto border mb-4">
+                                <div class="text-gray-500 text-center py-4">
+                                    <i class="fas fa-robot text-2xl mb-2"></i>
+                                    <p>Ask me anything about {{ plant_name }}! 🌿</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <input type="text" id="chat-input" 
+                                       placeholder="Ask about {{ plant_name }}..." 
+                                       class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                                <button onclick="sendMessage()" 
+                                        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button onclick="toggleChat()" id="chat-toggle" 
+                                class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105">
+                            <i class="fas fa-comments mr-2"></i>
+                            Start Chat 💬
+                        </button>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-8 flex flex-wrap gap-4 justify-center">
+                        <a href="{{ url_for('predict') }}" 
+                           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-camera mr-2"></i>
+                            Identify Another Plant 📸
+                        </a>
+                        <button onclick="shareInfo()" 
+                                class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-share mr-2"></i>
+                            Share Information 📤
+                        </button>
+                        <button onclick="printInfo()" 
+                                class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-print mr-2"></i>
+                            Print Info 🖨️
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 mt-16">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center items-center">
+                <div class="flex items-center">
+                    <i class="fas fa-leaf text-green-400 text-2xl mr-2"></i>
+                    <p class="text-center text-gray-400">
+                        © 2025AyurVedik AI. Made with 💚 for nature lovers.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let chatVisible = false;
+        let factInterval;
+
+        function toggleChat() {
+            const container = document.getElementById('chat-container');
+            const toggle = document.getElementById('chat-toggle');
+            
+            if (chatVisible) {
+                container.classList.add('hidden');
+                toggle.innerHTML = '<i class="fas fa-comments mr-2"></i>Start Chat 💬';
+                chatVisible = false;
+            } else {
+                container.classList.remove('hidden');
+                toggle.innerHTML = '<i class="fas fa-times mr-2"></i>Close Chat ❌';
+                chatVisible = true;
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Add loading message
+            addMessage('🤔 Thinking...', 'ai', true);
+            
+            // Send to ML
+            fetch('/chat_with_ml', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: `Tell me about ${message} regarding {{ plant_name }}`
+                })
+            })
+            .then(response => response.json())
+            .then((data) => {
+                removeLoadingMessage();
+                addMessage(data.response, 'ml');
+            })
+            .catch((error) => {
+                removeLoadingMessage();
+                addMessage('Sorry, I encountered an error. Please try again.', 'ml');
+            });
+        }
+
+        function addMessage(message, sender, isLoading = false) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `mb-3 ${isLoading ? 'loading-message' : ''}`;
+            
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="flex justify-end">
+                        <div class="bg-green-500 text-white px-4 py-2 rounded-lg max-w-xs lg:max-w-md">
+                            ${message}
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="flex justify-start">
+                        <div class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg max-w-xs lg:max-w-md">
+                            <i class="fas fa-robot mr-1"></i>${message}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeLoadingMessage() {
+            const loadingMessage = document.querySelector('.loading-message');
+            if (loadingMessage) {
+                loadingMessage.remove();
+            }
+        }
+
+        function shareInfo() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '{{ plant_name }} - AyurVedik AI',
+                    text: 'Check out this medicinal plant information from AyurVedik AI!',
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link copied to clipboard! 📋');
+            }
+        }
+
+        function printInfo() {
+            window.print();
+        }
+
+        // Fun facts and loading messages
+        const funFacts = [
+            "Ayurveda has been practiced for over 5,000 years! 🌿",
+            "There are over 3,000 medicinal plants documented in Ayurveda! 📚",
+            "Turmeric was one of the first plants used medicinally! 🟡",
+            "Many modern medicines are derived from plant compounds! 💊",
+            "Neem is called the 'pharmacy tree' in India! 🌳",
+            "Ginger can help with over 100 different ailments! 🫚"
+        ];
+
+        const loadingMessages = [
+            "Gathering comprehensive medicinal information...",
+            "Consulting ancient Ayurvedic texts...",
+            "Analyzing plant properties and benefits...",
+            "Preparing detailed usage instructions...",
+            "Finalizing safety guidelines..."
+        ];
+
+        let factIndex = 0;
+        let messageIndex = 0;
+
+        function rotateFacts() {
+            const funFactElement = document.getElementById('funFact');
+            const loadingMessageElement = document.getElementById('loadingMessage');
+            
+            if (funFactElement) {
+                funFactElement.textContent = funFacts[factIndex];
+                factIndex = (factIndex + 1) % funFacts.length;
+            }
+            
+            if (loadingMessageElement) {
+                loadingMessageElement.innerHTML = `${loadingMessages[messageIndex]} <strong class="text-green-700">{{ plant_name }}</strong>`;
+                messageIndex = (messageIndex + 1) % loadingMessages.length;
+            }
+        }
+
+        function hideLoadingScreen() {
+            if (factInterval) {
+                clearInterval(factInterval);
+            }
+            
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                loadingScreen.style.transition = 'opacity 0.5s ease-out';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        function cleanupContent() {
+            const plantInfoContent = document.getElementById('plant-info-content');
+            if (plantInfoContent) {
+                let content = plantInfoContent.innerHTML;
+                
+                // Remove code block wrappers
+                content = content.replace(/^```html\s*/i, '').replace(/\s*```$/, '');
+                content = content.replace(/^```\s*/, '').replace(/\s*```$/, '');
+                
+                // Remove HTML document structure if present
+                if (content.includes('<!DOCTYPE') || content.includes('<html')) {
+                    const bodyMatch = content.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+                    if (bodyMatch) {
+                        content = bodyMatch[1];
+                    } else {
+                        content = content.replace(/<!DOCTYPE[^>]*>/gi, '');
+                        content = content.replace(/<\/?html[^>]*>/gi, '');
+                        content = content.replace(/<head>[\s\S]*?<\/head>/gi, '');
+                        content = content.replace(/<\/?body[^>]*>/gi, '');
+                        content = content.replace(/<style>[\s\S]*?<\/style>/gi, '');
+                    }
+                }
+                plantInfoContent.innerHTML = content.trim();
+            }
+        }
+
+        // Initialize everything when page loads
+        function initializePage() {
+            // Start fact rotation
+            factInterval = setInterval(rotateFacts, 2000);
+            
+            // Clean up content
+            cleanupContent();
+            
+            // Hide loading screen after 1 second
+            setTimeout(hideLoadingScreen, 1000);
+        }
+
+        // Multiple event listeners to ensure it runs
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePage);
+        } else {
+            initializePage();
+        }
+
+        // Fallback timeout in case something goes wrong
+        setTimeout(hideLoadingScreen, 3000);
+
+        // Chat input event listener
+        window.addEventListener('load', function() {
+            const chatInput = document.getElementById('chat-input');
+            if (chatInput) {
+                chatInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
